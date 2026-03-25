@@ -9,16 +9,28 @@ pipeline {
             }
         }
 
-        stage('Build, Test & Package') {
+        stage('Build & Test') {
             steps {
-                sh 'mvn clean install'
+                sh 'mvn clean test'
+            }
+        }
+
+        stage('Package JAR') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+
+        stage('Install to Local Repo') {
+            steps {
+                sh 'mvn install'
             }
         }
     }
 
     post {
         success {
-            echo 'Build success!'
+            echo 'Library JAR packaged and installed successfully'
             archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
         }
         failure {
