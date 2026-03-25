@@ -10,7 +10,7 @@ class CalculatorApplicationTests {
 	@Test
     	public void testAdd() {
 		CalculatorApplication calc = new CalculatorApplication();
-		assertEquals(5, calc.add(2, 2));
+		assertEquals(4, calc.add(2, 2));
     	}
 
     	@Test
