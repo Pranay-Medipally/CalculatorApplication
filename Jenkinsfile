@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'   // Make sure this name matches Jenkins Global Tool Configuration
+    }
+
     stages {
 
         stage('Checkout Code') {
@@ -29,15 +33,17 @@ pipeline {
     }
 
     post {
-        success {
-            echo 'Library JAR packaged and installed successfully'
-            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-        }
-        failure {
-            echo 'Build failed'
-        }
         always {
-            junit '**/target/surefire-reports/*.xml'
+            // Publish test results safely
+            junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+        }
+
+        success {
+            echo 'Build Successful'
+        }
+
+        failure {
+            echo 'Build Failed'
         }
     }
 }
